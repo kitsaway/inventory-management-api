@@ -1,8 +1,9 @@
 import express, { Express, Request, Response } from "express";
-import dotenv from "dotenv";
-import cors from "cors";
 
-dotenv.config();
+require("dotenv").config();
+
+import cors from "cors";
+import { sequelize } from "./models";
 
 const app: Express = express();
 
@@ -25,6 +26,17 @@ app.use(async (req: Request, res: Response) => {
   res.status(404).send("Invalid Route");
 });
 
-app.listen(PORT, () => {
-  console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
+sequelize.authenticate().then(async () => {
+  try {
+    await sequelize.sync({ force: true }).then(() => {
+      console.log("Connected to db");
+      app.listen(PORT, () => {
+        console.log(
+          `⚡️[server]: Server is running at http://localhost:${PORT}`
+        );
+      });
+    });
+  } catch (error) {
+    console.log("error", error);
+  }
 });
