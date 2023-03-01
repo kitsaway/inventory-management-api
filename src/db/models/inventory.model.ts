@@ -1,5 +1,5 @@
 "use strict";
-import { UUIDV4 } from "sequelize";
+import { Optional, UUIDV4 } from "sequelize";
 import {
   Model,
   Table,
@@ -11,14 +11,17 @@ import {
 } from "sequelize-typescript";
 
 export interface InventoryAttributes {
-  id: string;
+  id?: string;
   name: string;
   price: number;
   location: string;
 }
 
+export interface InventoryInput extends Optional<InventoryAttributes, "id"> {}
+export interface InventoryOutput extends Required<InventoryAttributes> {}
+
 @Table({
-  tableName: "inventory",
+  tableName: "inventories",
   timestamps: true,
   paranoid: true,
 })
@@ -26,6 +29,7 @@ export default class Inventory
   extends Model<InventoryAttributes>
   implements InventoryAttributes
 {
+  @AllowNull(false)
   @PrimaryKey
   @Column({
     type: DataType.UUID,

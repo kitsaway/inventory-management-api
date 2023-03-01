@@ -3,7 +3,8 @@ import express, { Express, Request, Response } from "express";
 require("dotenv").config();
 
 import cors from "cors";
-import { sequelize } from "./models";
+import { sequelize } from "./db/config";
+import routes from "./api/routes";
 
 const app: Express = express();
 
@@ -17,9 +18,7 @@ app.use(express.urlencoded({ extended: false }));
 const PORT = process.env.PORT || 5000;
 
 // Routes
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TypeScript Server");
-});
+app.use("/inventories", routes);
 
 // Invalid route
 app.use(async (req: Request, res: Response) => {
@@ -28,7 +27,7 @@ app.use(async (req: Request, res: Response) => {
 
 sequelize.authenticate().then(async () => {
   try {
-    await sequelize.sync({ force: true }).then(() => {
+    await sequelize.sync().then(() => {
       console.log("Connected to db");
       app.listen(PORT, () => {
         console.log(
