@@ -28,7 +28,6 @@ app.use(async (req: Request, res: Response) => {
 
 const seed = process.argv[2];
 
-console.log("seed", seed);
 if (seed) {
   sequelize
     .sync({ force: true })
