@@ -5,6 +5,7 @@ require("dotenv").config();
 import cors from "cors";
 import { sequelize } from "./db/config";
 import routes from "./api/routes";
+import { createSeeds } from "./db/seeders/index";
 
 const app: Express = express();
 
@@ -25,17 +26,27 @@ app.use(async (req: Request, res: Response) => {
   res.status(404).send("Invalid Route");
 });
 
-sequelize.authenticate().then(async () => {
-  try {
-    await sequelize.sync().then(() => {
-      console.log("Connected to db");
-      app.listen(PORT, () => {
-        console.log(
-          `⚡️[server]: Server is running at http://localhost:${PORT}`
-        );
-      });
+const seed = process.argv[2];
+
+console.log("seed", seed);
+if (seed) {
+  sequelize
+    .sync({ force: true })
+    .then(() => {
+      createSeeds();
+    })
+    .catch((err) => {
+      console.error(err);
     });
-  } catch (error) {
-    console.log("error", error);
-  }
-});
+} else {
+  sequelize
+    .sync()
+    .then(() => {
+      app.listen(PORT, () => {
+        console.info(`App listening on port ${PORT}`);
+      });
+    })
+    .catch((err) => {
+      console.error(err);
+    });
+}

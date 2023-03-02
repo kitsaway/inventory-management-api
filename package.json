@@ -9,11 +9,13 @@
     "predev": "npm run build",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\"",
     "build": "npx tsc",
+    "seed": "node dist/index.js true",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Mariam T",
   "license": "ISC",
   "dependencies": {
+    "chance": "^1.1.10",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
