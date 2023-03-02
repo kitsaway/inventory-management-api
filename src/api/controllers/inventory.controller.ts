@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import {
-  InventoryInput,
-  InventoryOutput,
-} from "../../db/models/inventory.model";
+import { getOutput } from "../../db/dal/inventory.dal";
+import { InventoryInput } from "../../db/models/inventory.model";
 import * as service from "../services/inventory.service";
+
+type ReqQuery = { filter?: string; page: string };
 
 export const create = async (req: Request, res: Response) => {
   const payload: InventoryInput = req.body;
   const result = await service.create(payload);
-  return res.status(200).send(result);
+  return res.status(200).send({ data: result });
 };
 
 export const deleteById = async (req: Request, res: Response) => {
@@ -20,14 +20,24 @@ export const deleteById = async (req: Request, res: Response) => {
 };
 
 export const getAll = async (req: Request, res: Response) => {
-  const query = req.query;
-  const filter = JSON.stringify(query.filter);
-  let results: InventoryOutput[];
-  if (filter) {
-    results = await service.getAll(JSON.parse(filter));
-  } else {
-    results = await service.getAll();
+  const { filter, page } = req.query as ReqQuery;
+
+  const size: number = 20;
+  const pageN = Number.parseInt(page);
+  let pageNum = 0;
+  if (!Number.isNaN(pageN) && pageN > 0) {
+    pageNum = pageN;
   }
 
-  return res.status(200).send(results);
+  let results: getOutput;
+  if (filter) {
+    results = await service.getAll(size, pageNum, filter);
+  } else {
+    results = await service.getAll(size, pageNum);
+  }
+
+  return res.status(200).send({
+    data: results.rows,
+    pages: results.count / size,
+  });
 };

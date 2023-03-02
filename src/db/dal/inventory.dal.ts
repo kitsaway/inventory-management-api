@@ -3,6 +3,11 @@ import Inventory, {
   InventoryOutput,
 } from "../models/inventory.model";
 
+export interface getOutput {
+  rows: InventoryOutput[];
+  count: number;
+}
+
 export const create = async (
   payload: InventoryInput
 ): Promise<InventoryOutput> => {
@@ -17,9 +22,20 @@ export const deleteById = async (id: string): Promise<boolean> => {
   return !!deletedInventory;
 };
 
-export const getAll = async (filter?: string): Promise<InventoryOutput[]> => {
+export const getAll = async (
+  size: number,
+  page: number,
+  filter?: string
+): Promise<getOutput> => {
   if (filter) {
-    return Inventory.findAll({ where: { location: filter } });
+    return Inventory.findAndCountAll({
+      where: { location: filter },
+      limit: size,
+      offset: size * page,
+    });
   }
-  return Inventory.findAll();
+  return Inventory.findAndCountAll({
+    limit: size,
+    offset: size * page,
+  });
 };
