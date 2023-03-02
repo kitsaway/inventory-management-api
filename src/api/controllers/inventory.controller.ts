@@ -38,6 +38,7 @@ export const getAll = async (req: Request, res: Response) => {
 
   return res.status(200).send({
     data: results.rows,
+    count: results.count,
     pages: results.count / size,
   });
 };
