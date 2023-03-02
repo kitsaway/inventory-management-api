@@ -13,7 +13,7 @@ export const deleteById = (id: string): Promise<boolean> => {
 export const getAll = (
   size: number,
   page: number,
-  filter?: string
+  filter: string
 ): Promise<getOutput> => {
   return inventoryDal.getAll(size, page, filter);
 };

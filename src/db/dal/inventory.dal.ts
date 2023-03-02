@@ -25,9 +25,9 @@ export const deleteById = async (id: string): Promise<boolean> => {
 export const getAll = async (
   size: number,
   page: number,
-  filter?: string
+  filter: string
 ): Promise<getOutput> => {
-  if (filter) {
+  if (filter.length > 0) {
     return Inventory.findAndCountAll({
       where: { location: filter },
       limit: size,

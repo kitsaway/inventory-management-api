@@ -1,9 +1,8 @@
 import { Request, Response } from "express";
-import { getOutput } from "../../db/dal/inventory.dal";
 import { InventoryInput } from "../../db/models/inventory.model";
 import * as service from "../services/inventory.service";
 
-type ReqQuery = { filter?: string; page: string };
+type ReqQuery = { filter: string; page: string };
 
 export const create = async (req: Request, res: Response) => {
   const payload: InventoryInput = req.body;
@@ -29,12 +28,7 @@ export const getAll = async (req: Request, res: Response) => {
     pageNum = pageN;
   }
 
-  let results: getOutput;
-  if (filter) {
-    results = await service.getAll(size, pageNum, filter);
-  } else {
-    results = await service.getAll(size, pageNum);
-  }
+  let results = await service.getAll(size, pageNum, filter);
 
   return res.status(200).send({
     data: results.rows,
