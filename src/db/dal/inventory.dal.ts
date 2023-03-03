@@ -27,7 +27,7 @@ export const getAll = async (
   page: number,
   filter: string
 ): Promise<getOutput> => {
-  if (filter.length > 0) {
+  if (filter?.length > 0) {
     return Inventory.findAndCountAll({
       where: { location: filter },
       limit: size,
