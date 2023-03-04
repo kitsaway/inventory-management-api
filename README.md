@@ -4,9 +4,9 @@ Express server for Inventory management application
 
 ## Endpoints
 
-GET /inventories 
-POST /inventories - receives JSON body with name, location and price values
-DELETE /inventories/{inventoryID} - receives id of inventory to delete
+##### GET /inventories 
+##### POST /inventories - receives JSON body with name, location and price values
+##### DELETE /inventories/{inventoryID} - receives id of inventory to delete
 
 ## Available Scripts
 
@@ -24,10 +24,10 @@ Seeds database with 200 000 dummy data
 
 To run server properly, please create .env file with variables:
 
-PORT - port on which the server will run
-DB_USER - user of postgres database
-DB_NAME - name of postgres database
-DB_PASS - password of postgres database
+##### PORT - port on which the server will run
+##### DB_USER - user of postgres database
+##### DB_NAME - name of postgres database
+##### DB_PASS - password of postgres database
 
 
 
