@@ -24,10 +24,10 @@ Seeds database with 200 000 dummy data
 
 To run server properly, please create .env file with variables:
 
-PORT
-DB_USER
-DB_NAME
-DB_PASS
+PORT - port on which the server will run
+DB_USER - user of postgres database
+DB_NAME - name of postgres database
+DB_PASS - password of postgres database
 
 
 
